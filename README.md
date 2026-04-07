@@ -1,337 +1,220 @@
-# Claude Code Workshop — Build & Deploy an MVP in 2 Hours
+# Claude Code Workshop — Build, Ship, Pitch
 
-Welcome! In this workshop, you'll use **Claude Code** (an AI coding assistant that lives in your terminal) to build and deploy a real web application from scratch.
+Today your team will:
+1. **Build a working MVP** of a product idea using Claude Code
+2. **Create a pitch** — marketing, positioning, story
+3. **Present it** — live demo + 3-minute pitch
 
-No prior AI coding experience needed. If you can type in a terminal, you're good.
-
-## What You're Working With
-
-| Tool | What it does |
-|------|-------------|
-| **Claude Code** | AI assistant in your terminal — you describe what you want, it writes the code |
-| **Next.js** | React framework for building web apps |
-| **Tailwind CSS** | Utility-first CSS — style things with class names instead of writing CSS |
-| **Supabase** | Your database + user authentication (like Firebase, but open source) |
-| **Vercel** | Deploys your app to a live URL with one command |
-
-You don't need to know any of these tools. Claude Code does. Just tell it what you want.
+You have 2 hours to build. Claude Code writes the code. You tell it what to build.
 
 ---
 
-## From Idea to Code: The Bridge
+## Getting Started
 
-During the first hour of the workshop, you'll brainstorm your MVP idea with your team and your workshop leader. By the end of that session, you'll have something — maybe notes on a whiteboard, a sketch on paper, a few bullet points in your head.
+### 1. Fork and clone this repo
 
-The question is: **how do you turn that into something Claude Code can actually build?**
-
-### The problem
-
-If you open Claude Code and type *"build my app"*, you'll get something generic. If you dump 3 pages of brainstorming notes, you'll burn tokens and confuse it. The sweet spot is a **short, structured brief** — think of it as a creative brief for a developer who's never heard of your idea.
-
-### Write a project brief
-
-After your brainstorming session, take 5 minutes as a team to fill this in. Write it in a text file, on paper, or in your notes app — wherever your team thinks best.
-
-```
-PROJECT BRIEF
-
-App name: _______________
-
-One sentence: What does this app do, and for who?
-→ _______________
-
-Pages:
-→ _______________  (what does the user see here?)
-→ _______________  (what does the user see here?)
-→ _______________  (what does the user see here?)
-
-Data: What are we storing?
-→ Table: _________ (columns: _________)
-→ Table: _________ (columns: _________)
-
-User flow: What happens step by step?
-→ 1. User signs up / logs in
-→ 2. _______________
-→ 3. _______________
-→ 4. _______________
-```
-
-**Example — a team building an expense tracker:**
-
-```
-PROJECT BRIEF
-
-App name: SpendTrack
-
-One sentence: A simple app where people log their daily expenses and see where their money goes.
-
-Pages:
-→ /login and /signup (email + password auth)
-→ /dashboard (list of expenses, total spent this month, "add expense" button)
-→ /add (form: amount, category dropdown, short description, date)
-
-Data:
-→ Table: expenses (id, amount, category, description, date, user_id, created_at)
-→ Categories: Food, Transport, Entertainment, Shopping, Bills, Other
-
-User flow:
-→ 1. User signs up or logs in
-→ 2. Sees their dashboard with all expenses and a monthly total
-→ 3. Clicks "Add Expense" and fills out the form
-→ 4. Expense appears in the list, total updates
-```
-
-### Feed it to Claude Code
-
-Once your brief is ready, you have two options:
-
-**Option A: Paste it as your first prompt**
-
-Open Claude Code and paste your entire brief as the first message. Then say:
-
-> Here's what we're building. Start with the database setup — create the Supabase table, then build the auth pages (signup + login), then the main dashboard page.
-
-This gives Claude Code the full picture upfront so it makes smart decisions about structure.
-
-**Option B: Save it as a file (recommended)**
-
-Save your brief as `BRIEF.md` in the project root. Then tell Claude Code:
-
-> Read BRIEF.md — that's what we're building. Start with setting up the Supabase table, then auth, then the dashboard.
-
-This way Claude Code can re-read it anytime without you re-explaining. Saves tokens.
-
-### Scope check
-
-Before you start building, do a final gut check with your team:
-
-- **Can you build this in 2 hours?** If your brief has more than 3 pages or 2 tables, cut something.
-- **What's the ONE thing this app does?** If you can't answer in 5 words, simplify.
-- **What can you cut?** Settings page? Profile page? Filters? Cut them. Ship the core, add extras if you have time.
-
-A finished simple app you can demo beats a half-built complex one every time.
-
-### Starter ideas
-
-Not sure what to build? Pick one of these:
-
-| Idea | One sentence | Core screen |
-|------|-------------|-------------|
-| **Expense Tracker** | Log expenses and see totals by category | Dashboard with expense list + add form |
-| **Task Manager** | Create, complete, and organize tasks | Task list with checkboxes + input |
-| **Team Poll** | Create polls and vote in real-time | Poll with options and vote counts |
-| **Bookmark Saver** | Save and tag links for later | Grid of bookmark cards + URL input |
-| **Habit Tracker** | Check off daily habits and track streaks | Calendar grid of habits |
-| **Simple Blog** | Write and publish short posts | Post list + new post form |
-| **Standup Logger** | Team members post daily standups | Timeline of standup entries |
-
----
-
-## Setup (5 minutes)
-
-### Step 1: Clone this repo
+One person on your team runs this:
 
 ```bash
-git clone https://github.com/Betterfit-ca/claude-code-workshop-starter.git
+gh repo fork Betterfit-ca/claude-code-workshop-starter --clone
 cd claude-code-workshop-starter
 ```
 
-### Step 2: Install dependencies
+> Don't have `gh`? Ask your technical assistant for help, or: go to the [repo page](https://github.com/Betterfit-ca/claude-code-workshop-starter), click **Fork**, then clone your fork.
+
+### 2. Set up your credentials
+
+Your organizer will give you three things: a Claude API key, a Supabase URL, and a Supabase key.
 
 ```bash
-npm install
-```
+# Set your Claude API key
+export ANTHROPIC_API_KEY='sk-ant-your-key-here'
 
-### Step 3: Set up your environment
-
-Copy the example env file and fill in your team's Supabase credentials (provided by your workshop leader):
-
-```bash
+# Create your env file
 cp .env.example .env.local
 ```
 
-Open `.env.local` and paste in your Supabase URL and key.
+Open `.env.local` and paste your Supabase URL and key. Ask your technical assistant if you need help.
 
-### Step 4: Set your API key
-
-Your workshop leader will give you a Claude API key. Set it in your terminal:
+### 3. Install and run
 
 ```bash
-export ANTHROPIC_API_KEY='sk-ant-your-key-here'
-```
-
-### Step 5: Verify everything works
-
-```bash
+npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — you should see "Your MVP starts here."
+Open [http://localhost:3000](http://localhost:3000). If you see the starter page, you're good.
 
----
+### 4. Start Claude Code
 
-## How to Use Claude Code
-
-### Starting it
-
-Open a **new terminal tab** (keep the dev server running in the other one), navigate to the project folder, and type:
+Open a **second terminal tab**, navigate to the same folder, and run:
 
 ```bash
 claude
 ```
 
-That's it. You're now talking to Claude Code.
+You're in. Claude Code reads `CLAUDE.md` and `PROJECT.md` automatically — it already knows your stack.
 
-### Talking to it
+---
 
-Just describe what you want in plain English. Be specific. Here are some examples:
+## Plan Your Product
 
-**Good prompts (specific):**
-- "Add a signup and login page using Supabase Auth with email and password"
-- "Create a dashboard page that shows a list of items from a Supabase table called 'tasks'"
-- "Add a form to create new tasks with a title and description"
-- "Make the navbar sticky and add a logout button"
+Before anyone touches code, your whole team should spend 5-10 minutes on this.
 
-**Bad prompts (too vague):**
-- "Make it look better"
-- "Add some features"
-- "Build me an app"
+Open **`PROJECT.md`** in your editor. Fill it in together. This file is your team's shared brain:
+- **Coders** use it: Claude Code reads it automatically, so it always knows what you're building
+- **Marketers** use it: the Pitch Outline section at the bottom feeds directly into your pitch deck
+
+**Scoping rules:**
+- 3 pages max (login, main screen, maybe one more)
+- 1-2 database tables
+- If you can't explain the core feature in one sentence, simplify
+
+---
+
+## Divide and Conquer
+
+You're a team of 4. Split up:
+
+**Coders (1-2 people)** — Work with Claude Code to build the MVP. Follow the build guide below.
+
+**Marketers (1-2 people)** — Build the pitch deck, define the brand, create any marketing assets. Use the Pitch Outline section in `PROJECT.md` as your starting point. You can also use Claude (at [claude.ai](https://claude.ai)) to help write copy, create a pitch structure, or brainstorm positioning.
+
+Both workstreams come from the same `PROJECT.md`. Stay in sync.
+
+---
+
+## Building with Claude Code
+
+### The one rule: build one feature, then `/clear`
+
+Claude Code remembers everything in a conversation. After a few features, it's dragging thousands of lines of old context — slower, more expensive, more confused.
+
+**`/clear` wipes the conversation.** But Claude Code re-reads `CLAUDE.md` and `PROJECT.md` automatically on the next prompt. It keeps the big picture, forgets the implementation details of the last feature. This is what you want.
+
+**Workflow:**
+1. Ask Claude to build one feature
+2. Test it, make sure it works
+3. Commit: `git add -A && git commit -m "added [feature]"`
+4. Type `/clear`
+5. Ask for the next feature
+
+### Suggested build order
+
+| Phase | What | Time |
+|-------|------|------|
+| 1 | **Auth** — signup + login pages with Supabase | ~15 min |
+| 2 | **Core feature** — the main screen of your app | ~40 min |
+| 3 | **Make it useful** — one more feature that completes the experience | ~25 min |
+| 4 | **Make it pretty** — clean up the design with Tailwind | ~20 min |
+| 5 | **Deploy** — ship it live | ~10 min |
+
+Example prompts for each phase:
+
+> "Add signup and login pages using Supabase Auth with email and password. After login, redirect to /dashboard."
+
+> "Build the main dashboard page based on the project plan in PROJECT.md. Include [your core feature]."
+
+> "Improve the design. Make it clean and modern. Add spacing, better typography, and hover effects."
+
+### Prompting tips
+
+**Be specific:**
+- "Add a form to create new expenses with amount, category, and description" ← good
+- "Add some features" ← too vague, you'll get garbage
+
+**Paste errors directly:**
+- "This error appeared: [paste error]. Fix it." ← Claude is great at fixing its own mistakes
+
+**Don't over-explain:**
+- Claude Code already read your PROJECT.md. You don't need to re-explain the whole app every time.
 
 ### Key commands
 
 | Command | What it does |
 |---------|-------------|
-| `/clear` | Clears conversation history. Use between unrelated features to save tokens. |
-| `/cost` | Shows how much you've spent so far |
-| `Ctrl+C` | Cancel the current operation |
+| `/clear` | Wipes conversation. Use after each feature. |
+| `/cost` | Shows how much you've spent |
+| `Ctrl+C` | Cancel current operation |
 | `exit` | Leave Claude Code |
 
-### The golden rule
-
-**One feature at a time.** Don't ask for everything at once.
-
-Instead of: *"Build me a full task manager with auth, CRUD, and a dashboard"*
-
-Do this:
-1. "Add a signup and login page with Supabase Auth"
-2. `/clear`
-3. "Create a tasks table in the app and a page to list all tasks"
-4. `/clear`
-5. "Add a form to create new tasks"
-6. `/clear`
-7. "Add the ability to mark tasks as complete"
-
-This gives you better results and uses fewer tokens.
-
 ---
 
-## Building Your MVP — Suggested Flow
+## Deploy
 
-You have 2 hours. Here's a plan that works:
-
-### Phase 1: Auth (20 min)
-Ask Claude Code to add signup and login pages using Supabase Auth. This gives your app real users.
-
-> "Add a signup page and a login page using Supabase Auth with email and password. After login, redirect to /dashboard. Add a layout with a simple navbar that shows a logout button when logged in."
-
-### Phase 2: Core Feature (40 min)
-This is your app's main thing. A task list, a blog, a booking system, a notes app — whatever your team picked.
-
-> "Create a 'tasks' table in Supabase with columns: id (uuid), title (text), description (text), completed (boolean), user_id (uuid), created_at (timestamp). Then build a /dashboard page that lists the current user's tasks and a form to add new ones."
-
-### Phase 3: Make It Useful (30 min)
-Add the features that make it feel like a real app.
-
-> "Add the ability to click a task to mark it as complete. Completed tasks should appear with a strikethrough and move to the bottom of the list."
-
-### Phase 4: Make It Pretty (20 min)
-> "Improve the design of the dashboard. Make it clean and modern using Tailwind. Add some spacing, better typography, and subtle hover effects on the task cards."
-
-### Phase 5: Deploy (10 min)
+When you're ready to go live:
 
 ```bash
-npm run build        # Make sure it builds without errors
-npx vercel --prod    # Deploy to the internet
+npm run build
 ```
 
-Follow the prompts. Your app is now live with a real URL.
+If the build fails, paste the error into Claude Code: "Fix this build error: [paste]"
+
+Once it builds clean:
+
+```bash
+npx vercel --prod
+```
+
+Follow the prompts. You'll get a live URL. That's your demo link.
 
 ---
 
-## Supabase Tips
+## Prepare Your Pitch
 
-### Creating a table
+Your pitch should be **3-5 minutes**. Structure:
 
-You can ask Claude Code to write the SQL, but you'll run it in the Supabase dashboard:
+1. **The problem** (30 sec) — What sucks about the status quo? Make the audience feel the pain.
+2. **The solution** (30 sec) — What does your product do? Keep it simple.
+3. **Live demo** (1-2 min) — Show the working app. Walk through the user flow.
+4. **Why it's different** (30 sec) — What's your edge?
+5. **The ask** (30 sec) — What do you need? Users, feedback, investment?
 
-1. Go to your Supabase project dashboard
-2. Click **SQL Editor** in the sidebar
-3. Paste the SQL that Claude Code generates
-4. Click **Run**
+Use the Pitch Outline section in `PROJECT.md` — you already wrote this during planning.
 
-### Enabling Row Level Security (RLS)
+---
 
-If Claude Code sets up RLS policies (it probably will), make sure to enable RLS on your table:
+## Git Saves You
 
-1. Go to **Table Editor** in Supabase
-2. Click your table
-3. Click **RLS** and toggle it on
-4. Add the policies Claude Code wrote
+Commit after every feature. If Claude breaks something, you can always go back.
+
+```bash
+git add -A && git commit -m "describe what you just built"
+```
+
+Something went wrong? See what changed:
+```bash
+git diff
+```
+
+Undo everything since last commit:
+```bash
+git checkout .
+```
 
 ---
 
 ## Troubleshooting
 
-**"Module not found" errors**
-```bash
-npm install
-```
+**"npm install" fails**
+→ Check your Node version: `node -v` (needs 18+)
 
-**Page shows nothing / white screen**
-- Check your terminal for errors
-- Make sure `.env.local` has the correct Supabase URL and key
-- Restart the dev server: `Ctrl+C` then `npm run dev`
+**Page is blank / white screen**
+→ Check your terminal for errors. Make sure `.env.local` has the right Supabase URL and key.
 
-**Supabase queries return empty data**
-- Did you create the table? Check the Supabase dashboard
-- Did you enable RLS? If yes, did you add the right policies?
-- Check that `.env.local` has the correct project URL
+**Supabase returns empty data**
+→ Did you create the table? Go to Supabase dashboard → SQL Editor → paste your SQL.
+→ Did you enable RLS? Check that policies are set up (see `supabase/setup.sql` for the pattern).
 
-**Claude Code seems slow or stops**
-- You might be hitting rate limits — wait 30 seconds and try again
-- Use `/clear` to reduce context size
-- Try shorter, more specific prompts
+**Claude Code is slow or errors**
+→ Wait 30 seconds (rate limit). Then try again.
+→ Use `/clear` to reduce context.
 
 **Build fails before deploy**
-- Ask Claude Code: "The build is failing with this error: [paste error]. Fix it."
-- It's really good at fixing its own mistakes
+→ Paste the error into Claude Code: "Fix this build error: [error]"
 
----
-
-## What You Can Build — Ideas
-
-Not sure what to build? Here are some MVPs that are very doable in 2 hours:
-
-- **Task Manager** — Create, complete, and delete tasks. Filter by status.
-- **Notes App** — Markdown notes with categories/tags.
-- **Expense Tracker** — Log expenses, see totals by category.
-- **Bookmarks Manager** — Save and organize links with tags.
-- **Simple Blog** — Write and publish posts. Public reading page.
-- **Habit Tracker** — Track daily habits with streaks.
-- **Poll/Voting App** — Create polls, share links, see results live.
-
-Pick one, keep it simple, and ship it.
-
----
-
-## After the Workshop
-
-This repo is yours. Keep building. Here are some things to explore:
-
-- **Supabase Realtime** — Make your app update live when data changes
-- **Supabase Storage** — Add file/image uploads
-- **Vercel Domains** — Connect a custom domain to your app
-- **Claude Code** — Available at [claude.ai/download](https://claude.ai/download)
+**Need help?**
+→ Message your WhatsApp group. Your technical assistant is there.
 
 ---
 
